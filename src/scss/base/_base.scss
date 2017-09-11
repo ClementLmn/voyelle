@@ -1,0 +1,90 @@
+
+::-moz-selection{
+    background: $primary;
+    color: $white;
+    text-shadow: none;
+}
+::selection{
+    background: $primary;
+    color: $white;
+    text-shadow: none;
+}
+
+html{
+    font-size: 62.5%;
+}
+
+html,body{
+    height: 100% !important; 
+}
+
+body{
+    font-family: 'Roboto';
+    font-size: 1.6em;
+    line-height: 1.45;
+    color: $text;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+strong{
+    font-family: $roboto-bold;
+}
+
+.ovh{
+    overflow: hidden;
+}
+
+.icon{
+    width: 1.2em;
+    height: 1.2em;
+    fill: currentColor;
+}
+
+.t-center{
+    text-align: center;
+}
+
+h1, h2, h3, h4{
+    font-family: $roboto-bold;
+}
+
+h2{
+    margin: 1em 0;
+    font-size: 28px;
+    color: $primary;
+}
+
+h1{
+    margin: 2em 0;
+    font-size: 4rem;
+    color: $primary;
+}
+
+a{
+    text-decoration: none;
+    color: $secondary;
+    font-family: $roboto-bold;
+    box-shadow: 0px 1px 0px $secondary;
+    transition: $transition;
+    &:hover, &:focus{
+        color: #f3509c;
+        box-shadow: 0 1px 0 #f3509c;
+    }
+}
+
+.xdebug-var-dump{
+    position: fixed;
+    z-index: 10;
+}
+
+.home, .single{
+    padding: 110px 0 0;
+}
+
+.container{
+    max-width: 100%;
+    width: 960px;
+    margin: 0 auto;
+}
+

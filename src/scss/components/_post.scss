@@ -1,0 +1,105 @@
+.post{
+    max-width: 100%;
+    display: flex;
+    margin: 0 0 10rem 0; 
+    .thumb{
+        width: 400px;
+        height: 250px;
+        margin: 0 25px 0 0;
+        background-size: cover;
+        background-position: 50% 50%;
+    }
+    h2{
+        font-size: 3.3rem;
+        margin: 0 0 10px;
+    }
+    .infos{
+        font-family: $roboto-medium;
+        margin: 0 0 25px;
+        > span {
+            display: inline-flex;
+            align-items: center;
+        }
+        .date{
+            margin: 0 0 0 35px;
+        }
+        .icon {
+            width: 12px;
+            color: $secondary;
+            margin: 0 10px 0 0;
+        }
+    }
+    .content{
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+        font-family: $roboto;
+        flex: 1;
+    }
+    .more-link{
+        font-family: $roboto-medium;
+        color: $secondary;
+        margin: auto 0 0 auto;
+        display: flex;
+        align-items: center;
+        .icon{
+            width: 15px;
+            margin: 0 0 0 10px;
+            transition: $transition;
+        }
+    }
+}
+
+.link-post{
+    color: $text;
+    text-decoration: none;
+    &:hover, &:focus{
+        color: $text;
+        .more-link{
+            filter: brightness(1.4);
+            .icon{
+                transform: translate(5px, 0);
+            }
+        }
+    }
+}
+
+@media (max-width : $desktop-small){
+    .post{
+        h2 {
+            font-size: 2.5rem;
+        }
+        padding: 0 105px;
+        flex-direction: column;
+        .thumb{
+            margin: 0 0 25px 0;
+            width: 100%;
+        }
+        .content{
+            flex: auto;
+        }
+    }
+}
+
+@media (max-width : $tablet){
+    .post{
+        padding: 0 30px;
+    }
+}
+
+@media (max-width : $phone){
+    .post{
+        margin: 1rem 0 3rem 0; 
+        .thumb{
+            height: 150px;
+        }
+        .infos{
+            > span {
+                display: flex;
+            }
+            .date{
+                margin: 10px 0 0;
+            }
+        }
+    }
+}

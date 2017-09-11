@@ -1,0 +1,38 @@
+// Variables //
+
+
+// Colors
+$white: rgb(255, 255, 255);
+$black: rgb(0, 0, 0);
+$text: rgb(38, 39, 41);
+$grey: rgb(73, 73, 73);
+
+$primary: rgb(0, 154, 225);
+$secondary : rgb(230, 0, 108);
+
+
+// Transitions
+$transition: 0.3s ease-in-out;
+
+
+// Fonts
+$roboto: 'robot', sans-serif;
+$roboto-italic: 'roboto-italic', $roboto;
+$roboto-medium: 'roboto-medium', $roboto;
+$roboto-bold: 'roboto-bold', $roboto-medium;
+
+// Mediaqueries
+$retina: 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)';
+
+$desktop-large: '1260px';
+$desktop: '1100px';
+$desktop-small: '960px';
+$tablet: '780px';
+$phone: '580px';
+$phone-small: '400px';
+
+
+// Grid
+$col: 100/12*1%;
+
+$gutter: 15px;

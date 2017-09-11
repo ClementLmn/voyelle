@@ -1,0 +1,29 @@
+{
+    "name": "blogm1",
+    "version": "0.0.0",
+    "main": "gulpfile.js",
+    "dependencies": {},
+    "devDependencies": {
+      "del": "^3.0.0",
+      "browser-sync": "^2.12.8",
+      "browserify": "^14.4.0",      
+      "gulp": "^3.9.1",
+      "gulp-autoprefixer": "^3.1.0",
+      "gulp-load-plugins": "^1.2.3",
+      "gulp-notify": "^2.2.0",
+      "gulp-prettify": "^0.4.0",
+      "gulp-rename": "^1.2.2",
+      "gulp-sass": "^2.3.1",
+      "gulp-size": "^2.1.0",
+      "gulp-sourcemaps": "^1.6.0",
+      "gulp-watch": "^4.3.8",
+      "jquery-slim": "^3.0.0",
+      "path": "^0.12.7",
+      "vinyl-buffer": "^1.0.0",
+      "vinyl-source-stream": "^1.1.0"
+    },
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "license": "MIT"
+  }

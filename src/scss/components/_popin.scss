@@ -1,0 +1,25 @@
+.need-log{
+    position: fixed;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    &:before{
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba($black, 0.8);
+    }
+    .popin{
+        position: relative;
+        margin: auto auto;
+        padding: 70px 100px;
+        background-color: $white;
+        z-index: 2;
+    }
+}
