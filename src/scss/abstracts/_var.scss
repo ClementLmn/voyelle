@@ -2,13 +2,16 @@
 
 
 // Colors
-$white: rgb(255, 255, 255);
-$black: rgb(0, 0, 0);
+$white: #e8e8e8;
+$black: #252525;
 $text: rgb(38, 39, 41);
 $grey: rgb(73, 73, 73);
 
 $primary: #534E8F;
-$secondary : rgb(230, 0, 108);
+$bg : #4e4e4e;
+$red : #ff9639;
+$blue : #3080F3;
+$green : #20ccb5;
 
 
 // Transitions
@@ -16,7 +19,7 @@ $transition: 0.3s ease-in-out;
 
 
 // Fonts
-$droid: 'Droid Serif', sans-serif;
+$lato: 'Lato', sans-serif;
 
 // Mediaqueries
 $retina: 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)';

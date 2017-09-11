@@ -1,4 +1,24 @@
 body{
     display: flex;
-    background-color: $primary;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $bg;
+    font-family: $lato;
+}
+
+.red{
+    color: $red !important;
+}
+.black{
+    color: $black !important;
+}
+.white{
+    color: $white !important;
+}
+.blue{
+    color: $blue !important;
+}
+.green{
+    color: $green !important;
 }

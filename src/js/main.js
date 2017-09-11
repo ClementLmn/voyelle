@@ -1,6 +1,8 @@
 'use strict';
 
 var $ = require('jquery');
+var TweenLite = require('gsap/TweenLite');
+require('gsap/CSSPlugin');
 
 $(function(){
 
@@ -10,73 +12,87 @@ $(function(){
     var windowWidth = window.outerWidth, windowHeight = $(window).height();
     var scrollTop = $(document).scrollTop();
     var angle = 0;
-    var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar, spans;
+    var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar = $('.big-char'), letters, words;
+    var voyelles = ['a', 'A', 'e', 'E', 'i', 'I', 'O', 'o', 'u', 'U'];
     var phaseJump = 360 / text.length;
-    var rectSize = 200;
+    var rectSizeX, rectSizeY;
+    var doneWords = [];
 
-
-    function initEvent(){
-        $('#char-A').on('click', function(e){
-            var start = $(this);
-            searchLetter(start, 'black');
-        });
-        $('#char-E').on('click', function(e){
-            var start = $(this);
-            searchLetter(start, 'white');
-        });
-        $('#char-I').on('click', function(e){
-            var start = $(this);
-            searchLetter(start, '#ff5319');
-        });
-        $('#char-U').on('click', function(e){
-            var start = $(this);
-            searchLetter(start, 'green');
-        });
-        $('#char-O').on('click', function(e){
-            var start = $(this);
-            searchLetter(start, 'blue');
-        });
-
+    function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function searchLetter(start, color){
-        spans.each(function(i){
-            if(start.data('letter') == $(this).data('letter')){
-                if(($(this).data('offsetTop') > start.data('offsetTop') - rectSize && $(this).data('offsetTop') < start.data('offsetTop') + rectSize) && ($(this).data('offsetLeft') > start.data('offsetLeft') - rectSize && $(this).data('offsetLeft') < start.data('offsetLeft') + rectSize) ){
-                    $(this).css('color', color);
-                    $(this).on('click', function(e){
-                        var start = $(this);
-                        searchLetter(start, color);
+
+    function wordCheck(){
+        words.each(function(i){
+            if(!$(this).data('complete')){
+                var numVoy = $(this).find('.voy').length;
+                var vDone = 0;
+                $(this).find('.voy').each(function(i){
+                    if(!$(this).data('hidden')){
+                        vDone ++;
+                    }
+                });
+                if(numVoy == vDone){
+                    doneWords.push($(this));
+                    $(this).data('complete', true);
+                    $(this).find(':not(.voy)').each(function(i){
+                        TweenLite.fromTo($(this), 0.3, {y: -3}, {ease: Power2.easeInOut, y: 0, delay : i * 0.05});
+                    });
+                    $(this).find('.voy').each(function(i){
+                        $(this).css('color', '');
                     });
                 }
             }
-        })
+        });
+    }
+
+    function searchLetter(start, toColor){
+        var d = 0;
+        rectSizeX = getRandom(100, 300);
+        rectSizeY = getRandom(100, 300);
+        letters.each(function(i){
+            if(start.data('letter') == $(this).data('letter')){
+                if(($(this).data('offsetTop') > start.data('offsetTop') - rectSizeY && $(this).data('offsetTop') < start.data('offsetTop') + rectSizeY) && ($(this).data('offsetLeft') > start.data('offsetLeft') - rectSizeX && $(this).data('offsetLeft') < start.data('offsetLeft') + rectSizeX) && $(this).data('hidden') ){
+                    $(this).data('hidden', false);
+                    TweenLite.to($(this), 0.3, {css:{color : toColor}, delay : d});
+                    TweenLite.fromTo($(this), 0.3, {y: -10}, {ease: Power2.easeInOut, y: 0, delay : d});
+                    d += 0.05;
+                    $(this).on('click', function(e){
+                        var start = $(this);
+                        searchLetter(start, toColor);
+                    });
+                }
+            }
+        });
+        console.log(d);
+        setTimeout(wordCheck, d * 1000 + 800);
     }
 
     function initText(){
-        poem.innerHTML = text.map(function (char) {
+        poem.innerHTML = '<span class="word">' + text.map(function (char) {
             if(char == "%"){
-                return '<br>';
-            }else if(char == "1"){
-                return '<span class="big-char" id="char-A">A</span>';
-            }else if(char == "2"){
-                return '<span class="big-char" id="char-E">E</span>';
-            }else if(char == "3"){
-                return '<span class="big-char" id="char-I">I</span>';
-            }else if(char == "4"){
-                return '<span class="big-char" id="char-U">U</span>';
-            }else if(char == "5"){
-                return '<span class="big-char" id="char-O">O</span>';
+                return '</span><br><span class="word">';
+            }else if(char == " "){
+                return '</span> <span class="word">'
             }else{
-                return '<span>' + char + '</span>';
+                if($.inArray(char, voyelles) !== -1){
+                    return '<span class="voy">' + char + '</span>';
+                }else{
+                    return '<span>' + char + '</span>';
+                }
+                
             }
         }).join('');
-        bigChar= $('.big-char');
-        spans = $('#poem > span');
-        spans.each(function(i){
+        poem.innerHTML += '</span>';
+        words = $('.word');
+        letters = $('.word > span');
+        letters.each(function(i){
+            $(this).data({'offsetTop' : $(this).offset().top, 'offsetLeft' : $(this).offset().left, 'letter' : $(this).text().toLowerCase(), 'hidden' : true});
+        });
+        bigChar.each(function(i){
             $(this).data({'offsetTop' : $(this).offset().top, 'offsetLeft' : $(this).offset().left, 'letter' : $(this).text().toLowerCase()});
         });
-        initEvent();
     }
 
     function scrollHandler() {
@@ -86,17 +102,57 @@ $(function(){
     function resizeHandler(){
 
     }
-    
-    function wheee() {
+
+    function buttonColor() {
         bigChar.each(function( i ) {
             $(this).css('color', 'hsl(' + (angle + i* 360 / bigChar.length) + ', 55%, 70%)');
         });
-        angle = angle + 3;
+        angle += 2;
+        requestAnimationFrame(buttonColor);
+    }
+    
+    function wheee() {
+        $(doneWords).each(function( i ) {
+            $(this).css('color', 'hsl(' + (angle + i * 360 / text.length) + ', 55%, 70%)');
+        });
+        angle++;
         requestAnimationFrame(wheee);
     }
 
     initText();
-    //wheee();
+    buttonColor();
+    wheee();
+
+    bigChar.each(function(){
+        $(this).on('click', function(e){
+            var start = $(this);
+            searchLetter(start, $(this).data('color'));
+        });
+    });
+
+    $("body").on("keypress", function (e) {
+        var theLetter;
+        switch(e.key){
+            case 'a' :
+                theLetter = $('#char-A');
+            break;
+            case 'e' :
+                theLetter = $('#char-E');
+            break;
+            case 'i' :
+                theLetter = $('#char-I');
+            break;
+            case 'o' :
+                theLetter = $('#char-O');
+            break;
+            case 'u' :
+                theLetter = $('#char-U');
+            break;
+        }
+        searchLetter(theLetter, theLetter.data('color'));
+    });
+
+    
 
 
     $(window).on('resize', throttle(function () {

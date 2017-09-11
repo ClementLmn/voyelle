@@ -1,11 +1,13 @@
 #poem{
-    margin: auto;
-    font-family: $droid;
     font-weight: 500;
     font-size: 20px;
     line-height: 1.45;
     text-align: center;
     > span {
-        color: $primary;
+        color: $bg;
+        > span {
+            display: inline-block;
+        }
     }
+
 }
