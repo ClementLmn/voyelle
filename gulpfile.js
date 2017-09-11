@@ -78,7 +78,7 @@ gulp.task('js', function () {
 
 gulp.task('templates', function() {
 
-    return gulp.src('src/*.php')
+    return gulp.src('src/*.html')
         .pipe(gulp.dest('dest'))
         .pipe($.size({title: 'template'}));
 });
@@ -101,7 +101,7 @@ gulp.task('watch', function () {
 
     browserSync({
         notify: false,
-        proxy: 'http://localhost/blogm1/dest/'
+        server: ['dest']
     });
 
 
@@ -109,7 +109,7 @@ gulp.task('watch', function () {
         gulp.start(['styles'], reload);
     });
 
-    $.watch('src/*.php', function(){
+    $.watch('src/*.html', function(){
         gulp.start(['templates'], reload);
     });
 

@@ -1,73 +1,103 @@
 'use strict';
 
 var $ = require('jquery');
-var ScrollReveal = require('scrollreveal');
-require('froala-editor/js/froala_editor.min.js')($);
-require('froala-editor/js/plugins/link.min.js')($);
-require('froala-editor/js/plugins/image.min.js')($);
 
 $(function(){
 
     window.requestAnimFrame = require('./requestAnimFrame.js');
     var throttle = require('./throttle.js');
-
     // window.outerWidth returns the window width including the scroll, but it's not working with $(window).outerWidth
     var windowWidth = window.outerWidth, windowHeight = $(window).height();
-    var header = $('#header');
     var scrollTop = $(document).scrollTop();
-    var inputFile = $('#thumbFile'), imgPreview = $("#imgPreview");
-    window.sr = new ScrollReveal({ reset: true, scale: 1, rotate: { z: 3 }, distance: '30px', duration: 600, viewFactor: 0.3 });
+    var angle = 0;
+    var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar, spans;
+    var phaseJump = 360 / text.length;
+    var rectSize = 200;
 
 
-    // Rajoute une class sur le header au scroll
-    function scrollHandler() {
-        scrollTop = $(document).scrollTop();
-        if(scrollTop > 80 && header.hasClass('big')){
-            header.addClass('small').removeClass('big');
-        }else if(scrollTop < 80 && header.hasClass('small')) {
-            header.addClass('big').removeClass('small');
-        }
+    function initEvent(){
+        $('#char-A').on('click', function(e){
+            var start = $(this);
+            searchLetter(start, 'black');
+        });
+        $('#char-E').on('click', function(e){
+            var start = $(this);
+            searchLetter(start, 'white');
+        });
+        $('#char-I').on('click', function(e){
+            var start = $(this);
+            searchLetter(start, '#ff5319');
+        });
+        $('#char-U').on('click', function(e){
+            var start = $(this);
+            searchLetter(start, 'green');
+        });
+        $('#char-O').on('click', function(e){
+            var start = $(this);
+            searchLetter(start, 'blue');
+        });
+
     }
 
-    // Fonction qui récupère l'image de l'input file et l'affiche
-    function imagePreview(e){
-        $('#nameFile').html(inputFile.val().split(/(\\|\/)/g).pop());
-        var file    = document.getElementById('thumbFile').files[0];
-        var reader  = new FileReader();
-        reader.addEventListener("load", function () {
-            imgPreview.css('background-image', 'url(' + reader.result + ')');
-        }, false);
-        
-        if (file) {
-            reader.readAsDataURL(file);
-        }
+    function searchLetter(start, color){
+        spans.each(function(i){
+            if(start.data('letter') == $(this).data('letter')){
+                if(($(this).data('offsetTop') > start.data('offsetTop') - rectSize && $(this).data('offsetTop') < start.data('offsetTop') + rectSize) && ($(this).data('offsetLeft') > start.data('offsetLeft') - rectSize && $(this).data('offsetLeft') < start.data('offsetLeft') + rectSize) ){
+                    $(this).css('color', color);
+                    $(this).on('click', function(e){
+                        var start = $(this);
+                        searchLetter(start, color);
+                    });
+                }
+            }
+        })
+    }
+
+    function initText(){
+        poem.innerHTML = text.map(function (char) {
+            if(char == "%"){
+                return '<br>';
+            }else if(char == "1"){
+                return '<span class="big-char" id="char-A">A</span>';
+            }else if(char == "2"){
+                return '<span class="big-char" id="char-E">E</span>';
+            }else if(char == "3"){
+                return '<span class="big-char" id="char-I">I</span>';
+            }else if(char == "4"){
+                return '<span class="big-char" id="char-U">U</span>';
+            }else if(char == "5"){
+                return '<span class="big-char" id="char-O">O</span>';
+            }else{
+                return '<span>' + char + '</span>';
+            }
+        }).join('');
+        bigChar= $('.big-char');
+        spans = $('#poem > span');
+        spans.each(function(i){
+            $(this).data({'offsetTop' : $(this).offset().top, 'offsetLeft' : $(this).offset().left, 'letter' : $(this).text().toLowerCase()});
+        });
+        initEvent();
+    }
+
+    function scrollHandler() {
+
     }
 
     function resizeHandler(){
 
     }
+    
+    function wheee() {
+        bigChar.each(function( i ) {
+            $(this).css('color', 'hsl(' + (angle + i* 360 / bigChar.length) + ', 55%, 70%)');
+        });
+        angle = angle + 3;
+        requestAnimationFrame(wheee);
+    }
 
-    sr.reveal($('.post'));
-    sr.reveal($('.wrapper-comment'));
+    initText();
+    //wheee();
 
-    inputFile.on('change', function(e){
-        imagePreview(e);
-    });
-
-    $('#burger, #overlay').on('click', function(e){
-        header.toggleClass('open');
-    });
-
-
-    //WYSIWYG
-    $('#contentArticle').froalaEditor({
-        height: '450',
-        placeholderText: 'Rédigez votre article',
-        language: 'fr',
-        toolbarButtons: ['undo', 'redo', '|', 'bold', 'italic', 'underline', 'strikeThrough','subscript', 'superscript','|','outdent', 'indent','|','insertLink', 'insertImage','|', 'insertHR', 'selectAll', 'clearFormatting' ],
-        toolbarButtonsSM: ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|','insertLink', 'insertImage', 'clearFormatting' ],
-        toolbarButtonsXS: ['undo', 'redo', '|', 'bold', 'italic', 'underline', '|','insertLink', 'insertImage']
-    });
 
     $(window).on('resize', throttle(function () {
         requestAnimFrame(resizeHandler);

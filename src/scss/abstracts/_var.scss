@@ -7,7 +7,7 @@ $black: rgb(0, 0, 0);
 $text: rgb(38, 39, 41);
 $grey: rgb(73, 73, 73);
 
-$primary: rgb(0, 154, 225);
+$primary: #534E8F;
 $secondary : rgb(230, 0, 108);
 
 
@@ -16,10 +16,7 @@ $transition: 0.3s ease-in-out;
 
 
 // Fonts
-$roboto: 'robot', sans-serif;
-$roboto-italic: 'roboto-italic', $roboto;
-$roboto-medium: 'roboto-medium', $roboto;
-$roboto-bold: 'roboto-bold', $roboto-medium;
+$droid: 'Droid Serif', sans-serif;
 
 // Mediaqueries
 $retina: 'only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)';
