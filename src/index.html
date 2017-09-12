@@ -14,18 +14,27 @@
     <body>
 
         <div id='buttons'>
-            <span class='big-char' data-color='#252525' id='char-A'>A</span>
-            <span class='big-char' data-color='#e8e8e8' id='char-E'>E</span>
-            <span class='big-char' data-color='#ff9639' id='char-I'>I</span>
-            <span class='big-char' data-color='#20ccb5' id='char-U'>U</span>
-            <span class='big-char' data-color='#3080F3' id='char-O'>O</span>
+            <span class='big-char black' data-color='#252525' id='char-A'>A</span>
+            <span class='big-char white' data-color='#e8e8e8' id='char-E'>E</span>
+            <span class='big-char red' data-color='#ff9639' id='char-I'>I</span>
+            <span class='big-char green' data-color='#20ccb5' id='char-U'>U</span>
+            <span class='big-char blue' data-color='#3080F3' id='char-O'>O</span>
         </div>
 
         <div id="poem">A noir, E blanc, I rouge, U vert, O bleu&nbsp;: voyelles,%Je dirai quelque jour vos naissances latentes&nbsp;:%A, noir corset velu des mouches éclatantes%Qui bombinent autour des puanteurs cruelles,*Golfes d'ombre&nbsp;; E, candeurs des vapeurs et des tentes,%Lances des glaciers fiers, rois blancs, frissons d'ombelles&nbsp;;%I, pourpres, sang craché, rire des lèvres belles%Dans la colère ou les ivresses pénitentes&nbsp;;*U, cycles, vibrement divins des mers virides,%Paix des pâtis semés d'animaux, paix des rides%Que l'alchimie imprime aux grands fronts studieux&nbsp;;*O, suprême Clairon plein des strideurs étranges,%Silences traversés des Mondes et des Anges&nbsp;:%O l'Oméga, rayon violet de Ses Yeux&nbsp;!</div>
 
         <canvas id='canvas' class='canvas'></canvas>
-        <div class="progress-wrapper">
-            <span class='progressbar' id='progress'></span>
+        <div class="progress-wrapper-top">
+            <span class='progressbar' id='progressT'></span>
+        </div>
+        <div class="progress-wrapper-right">
+            <span class='progressbar' id='progressR'></span>
+        </div>
+        <div class="progress-wrapper-bottom">
+            <span class='progressbar' id='progressB'></span>
+        </div>
+        <div class="progress-wrapper-left">
+            <span class='progressbar' id='progressL'></span>
         </div>
         
         <script src='js/main.js' defer></script>

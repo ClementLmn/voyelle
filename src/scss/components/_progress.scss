@@ -1,18 +1,69 @@
-.progress-wrapper{
+.progress-wrapper-top{
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 10px;
     width: 100vw;
+    .progressbar{
+        position: relative;
+        display: block;
+        height: 100%;
+        width: 0%;
+        background-color: red;
+        transition: 1s ease-out;
+    }
 }
 
-.progressbar{
-    position: relative;
-    display: block;
-    height: 100%;
-    width: 0%;
-    background-color: red;
-    border-radius: 2px;
-    transition: 1s ease-out;
+.progress-wrapper-bottom{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    width: 100vw;
+    .progressbar{
+        position: absolute;
+        display: block;
+        height: 100%;
+        right: 0;
+        width: 0%;
+        background-color: red;
+        transition: 1s ease-out;
+    }
+}
+
+.progress-wrapper-right{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100vh;
+    width: 10px;
+    .progressbar{
+        position: relative;
+        display: block;
+        height: 0%;
+        width: 100%;
+        background-color: red;
+        transition: 1s ease-out;
+    }
+}
+
+.progress-wrapper-left{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    width: 10px;
+    .progressbar{
+        position: absolute;
+        bottom: 0;
+        display: block;
+        height: 0%;
+        width: 100%;
+        background-color: red;
+        transition: 1s ease-out;
+    }
 }

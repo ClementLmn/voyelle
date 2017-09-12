@@ -6,39 +6,85 @@ require('gsap/CSSPlugin');
 
 $(function(){
 
+    //Pour des belles animations à 60fps
     window.requestAnimFrame = require('./requestAnimFrame.js');
-    var scrollTop = $(document).scrollTop();
-    var angle = 0;
+
+    //Variables pour la modification du texte
     var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar = $('.big-char'), letters, words;
     var voyelles = ['a', 'A', 'e', 'E', 'i', 'I', 'O', 'o', 'u', 'U'];
     var allVoy, allVoyDone = [];
-    var phaseJump = 360 / text.length;
-    var r;
-    var radius = 0, opacity = 1;
-    var iCircle = 0;
     var doneWords = [];
-    var canvas = $('#canvas'), progress = $('#progress');
-    var ctx = document.getElementById('canvas').getContext('2d');
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
 
+    // Variables pour le mode rainbow
+    var angle = 0, angleB = 0;
+    var phaseJump = 360 / text.length;
+
+    //Variables pour la progressbar
+    var step = 1,percent, progressT = $('#progressT'), progressR = $('#progressR'), progressB = $('#progressB'), progressL = $('#progressL');
+
+    //Variables pour le canvas
+    var r;
+    var canvas = $('#canvas'), radius = 0, opacity = 1, iCircle = 0;
+    var ctx = document.getElementById('canvas').getContext('2d');
+
+
+    //Fonction pour avoir un nombre aléatoire
     function getRandom(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    //Fonction de easing pour que l'animation du canvas (cercle de couleur) soit plus beeelle
     function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
         return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
     }
 
+    //On met a jour la barre de progression
     function updateProgress(){
         $(allVoyDone).each(function(){
             if($(this).data('hidden')){
                 $(this).data('hidden', false);
             }
         });
-        progress.css('width', allVoyDone.length * 100 / allVoy.length +'%' );
+        percent = allVoyDone.length * 100 / allVoy.length;
+        if(percent <= 25){
+            progressT.css('width', percent*4 +'%' );
+        }
+        if(percent > 25 && percent <= 50){
+            if(step == 1){
+                step ++;
+                progressT.css('width', '100%' );
+                setTimeout(function() {
+                    progressR.css('height', (percent - 25) * 100 / 25 +'%' );
+                }, 1000);
+            }else{
+                progressR.css('height', (percent - 25) * 100 / 25 +'%' );
+            }
+        }
+        if(percent > 50 && percent <= 75){
+            if(step == 2){
+                step ++;
+                progressR.css('height', '100%' );
+                setTimeout(function() {
+                    progressB.css('width', (percent - 50) * 100 / 25 +'%' );
+                }, 1000);
+            }else{
+                progressB.css('width', (percent - 50) * 100 / 25 +'%' );
+            }
+        }
+        if(percent > 75){
+            if(step == 3){
+                step ++;
+                progressB.css('width', '100%' );
+                setTimeout(function() {
+                    progressL.css('height', (percent - 75) * 100 / 25 +'%' );
+                }, 1000);
+            }else{
+                progressL.css('height', (percent - 75) * 100 / 25 +'%' );
+            }
+        }
     }
 
+    //On verifie si un mot est complet
     function wordCheck(){
         words.each(function(i){
             if(!$(this).data('complete')){
@@ -64,6 +110,7 @@ $(function(){
         });
     }
 
+    // On recherche si une lettre est présente dans la zone
     function searchLetter(start, toColor){
         var x = start.data('offsetLeft');
         var y = start.data('offsetTop');
@@ -72,7 +119,7 @@ $(function(){
         var d = 0;
         letters.each(function(i){
             if(start.data('letter') == $(this).data('letter')){
-                // (x1 - x2)^2 + (y1 - y2)^2 <= r^2 TRIGONOMETRIE BITCH
+                // (x1 - x2)^2 + (y1 - y2)^2 <= r^2 TRIGONOMETRIE ON ADORE
                 if(Math.pow(($(this).data('offsetLeft') - start.data('offsetLeft')), 2) + Math.pow(($(this).data('offsetTop') - start.data('offsetTop')), 2) < Math.pow(r, 2) && $(this).data('hidden')){
                     allVoyDone.push($(this));
                     TweenLite.to($(this), 0.3, {css:{color : toColor, autoAlpha: 1}, delay : d});
@@ -89,6 +136,8 @@ $(function(){
         updateProgress();
     }
 
+
+    //Split le texte avec un span par mot et un span par caractere
     function initText(){
         poem.innerHTML = '<span class="word">' + text.map(function (char) {
             if(char == "%"){
@@ -118,7 +167,7 @@ $(function(){
     }
 
 
-    // Petit canvas fait avec les fesses
+    // Petit canvas fait avec les mains
     function drawCircle(x,y,color){
         var coordX = x;
         var coordY = y;
@@ -142,44 +191,39 @@ $(function(){
             iCircle = 0;
         }
     }
-
-    function attentionOndeDeChoc(start, color){
-        var x = start.data('offsetLeft');
-        var y = start.data('offsetTop');
-        drawCircle(x,y,color);
-        searchLetter(start, color);
-    }
-
-    function buttonColor() {
-        bigChar.each(function( i ) {
-            $(this).css('color', 'hsl(' + (angle + i* 360 / bigChar.length) + ', 55%, 70%)');
-        });
-        angle += 2;
-        requestAnimationFrame(buttonColor);
-    }
     
+
+    //RAINBOW MODE cette fonction change la couleur
     function wheee() {
         $(doneWords).each(function( i ) {
             $(this).css('color', 'hsl(' + (angle + i * phaseJump) + ', 55%, 70%)');
         });
-        angle++;
+        $('.progressbar').each(function( i ) {
+            $(this).css('background-color', 'hsl(' + (angleB) + ', 55%, 70%)');
+        });
+        // bigChar.each(function( i ) {
+        //     $(this).css('color', 'hsl(' + (angle + i* 360 / bigChar.length) + ', 55%, 70%)');
+        // });
+        angleB += 2;
+        angle ++;
         requestAnimationFrame(wheee);
     }
 
+    //Pour mettre la bonne taille sur le canvas (en css c'est pas bien)
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+
     initText();
-    buttonColor();
-   // wheee();
+    wheee();
+    
 
-    // canvas.on('click', function(e){
-    //     console.log('click1');
-    //     attentionOndeDeChoc();
-    // });
 
+    // EVENTS
     bigChar.each(function(){
         $(this).on('click', function(e){
             var start = $(this);
             searchLetter(start, $(this).data('color'));
-            //$(this).removeClass('big-char').off( "click");
+            $(this).removeClass('big-char').off( "click");
         });
     });
 
