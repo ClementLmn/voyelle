@@ -128,6 +128,7 @@ $(function(){
         $(this).on('click', function(e){
             var start = $(this);
             searchLetter(start, $(this).data('color'));
+            $(this).removeClass('big-char').off( "click");
         });
     });
 
