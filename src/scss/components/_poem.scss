@@ -9,6 +9,7 @@
     > span {
         color: $bg;
         > span {
+            visibility: hidden;
             display: inline-block;
         }
     }
