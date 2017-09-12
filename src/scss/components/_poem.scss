@@ -3,6 +3,9 @@
     font-size: 20px;
     line-height: 1.45;
     text-align: center;
+    .voy{
+        cursor: pointer;
+    }
     > span {
         color: $bg;
         > span {

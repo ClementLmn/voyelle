@@ -34,7 +34,7 @@ $(function(){
                     }
                 });
                 if(numVoy == vDone){
-                    doneWords.push($(this));
+                    
                     $(this).data('complete', true);
                     $(this).find(':not(.voy)').each(function(i){
                         TweenLite.fromTo($(this), 0.3, {y: -3}, {ease: Power2.easeInOut, y: 0, delay : i * 0.05});
@@ -42,6 +42,7 @@ $(function(){
                     $(this).find('.voy').each(function(i){
                         $(this).css('color', '');
                     });
+                    doneWords.push($(this));
                 }
             }
         });
