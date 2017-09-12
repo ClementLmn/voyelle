@@ -15117,12 +15117,13 @@ $(function(){
     var angle = 0;
     var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar = $('.big-char'), letters, words;
     var voyelles = ['a', 'A', 'e', 'E', 'i', 'I', 'O', 'o', 'u', 'U'];
+    var allVoy, allVoyDone = [];
     var phaseJump = 360 / text.length;
-    var rectSizeX, rectSizeY, r;
+    var r;
     var radius = 0, opacity = 1;
     var iCircle = 0;
     var doneWords = [];
-    var canvas = $('#canvas');
+    var canvas = $('#canvas'), progress = $('#progress');
     var ctx = document.getElementById('canvas').getContext('2d');
     ctx.canvas.width  = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
@@ -15133,6 +15134,15 @@ $(function(){
 
     function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
         return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
+    }
+
+    function updateProgress(){
+        $(allVoyDone).each(function(){
+            if($(this).data('hidden')){
+                $(this).data('hidden', false);
+            }
+        });
+        progress.css('width', allVoyDone.length * 100 / allVoy.length +'%' );
     }
 
     function wordCheck(){
@@ -15170,7 +15180,7 @@ $(function(){
             if(start.data('letter') == $(this).data('letter')){
                 // (x1 - x2)^2 + (y1 - y2)^2 <= r^2 TRIGONOMETRIE BITCH
                 if(Math.pow(($(this).data('offsetLeft') - start.data('offsetLeft')), 2) + Math.pow(($(this).data('offsetTop') - start.data('offsetTop')), 2) < Math.pow(r, 2) && $(this).data('hidden')){
-                    $(this).data('hidden', false);
+                    allVoyDone.push($(this));
                     TweenLite.to($(this), 0.3, {css:{color : toColor, autoAlpha: 1}, delay : d});
                     TweenLite.fromTo($(this), 0.3, {y: -10}, {ease: Power2.easeInOut, y: 0, delay : d});
                     d += 0.05;
@@ -15182,12 +15192,15 @@ $(function(){
             }
         });
         setTimeout(wordCheck, d * 1000 + 600);
+        updateProgress();
     }
 
     function initText(){
         poem.innerHTML = '<span class="word">' + text.map(function (char) {
             if(char == "%"){
                 return '</span><br><span class="word">';
+            }else if(char == "*"){
+                return '</span><br><br><span class="word">'
             }else if(char == " "){
                 return '</span> <span class="word">'
             }else{
@@ -15196,7 +15209,6 @@ $(function(){
                 }else{
                     return '<span>' + char + '</span>';
                 }
-                
             }
         }).join('');
         poem.innerHTML += '</span>';
@@ -15208,6 +15220,7 @@ $(function(){
         bigChar.each(function(i){
             $(this).data({'offsetTop' : $(this).offset().top, 'offsetLeft' : $(this).offset().left, 'letter' : $(this).text().toLowerCase()});
         });
+        allVoy = $('.voy');
     }
 
 
@@ -15261,7 +15274,7 @@ $(function(){
 
     initText();
     buttonColor();
-    wheee();
+   // wheee();
 
     // canvas.on('click', function(e){
     //     console.log('click1');
