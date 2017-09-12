@@ -15113,9 +15113,6 @@ require('gsap/CSSPlugin');
 $(function(){
 
     window.requestAnimFrame = require('./requestAnimFrame.js');
-    var throttle = require('./throttle.js');
-    // window.outerWidth returns the window width including the scroll, but it's not working with $(window).outerWidth
-    var windowWidth = window.outerWidth, windowHeight = $(window).height();
     var scrollTop = $(document).scrollTop();
     var angle = 0;
     var poem = document.querySelector('#poem'), text = poem.textContent.split(''), bigChar = $('.big-char'), letters, words;
@@ -15140,7 +15137,6 @@ $(function(){
                     }
                 });
                 if(numVoy == vDone){
-                    
                     $(this).data('complete', true);
                     $(this).find(':not(.voy)').each(function(i){
                         TweenLite.fromTo($(this), 0.3, {y: -3}, {ease: Power2.easeInOut, y: 0, delay : i * 0.05});
@@ -15172,7 +15168,6 @@ $(function(){
                 }
             }
         });
-        console.log(d);
         setTimeout(wordCheck, d * 1000 + 800);
     }
 
@@ -15202,14 +15197,6 @@ $(function(){
         });
     }
 
-    function scrollHandler() {
-
-    }
-
-    function resizeHandler(){
-
-    }
-
     function buttonColor() {
         bigChar.each(function( i ) {
             $(this).css('color', 'hsl(' + (angle + i* 360 / bigChar.length) + ', 55%, 70%)');
@@ -15220,7 +15207,7 @@ $(function(){
     
     function wheee() {
         $(doneWords).each(function( i ) {
-            $(this).css('color', 'hsl(' + (angle + i * 360 / text.length) + ', 55%, 70%)');
+            $(this).css('color', 'hsl(' + (angle + i * phaseJump) + ', 55%, 70%)');
         });
         angle++;
         requestAnimationFrame(wheee);
@@ -15259,20 +15246,8 @@ $(function(){
         }
         searchLetter(theLetter, theLetter.data('color'));
     });
-
-    
-
-
-    $(window).on('resize', throttle(function () {
-        requestAnimFrame(resizeHandler);
-    }, 60));
-
-    $(document).on('scroll', throttle(function(){
-        requestAnimFrame(scrollHandler);
-    }, 10));
-
 });
-},{"./requestAnimFrame.js":5,"./throttle.js":6,"gsap/CSSPlugin":1,"gsap/TweenLite":2,"jquery":3}],5:[function(require,module,exports){
+},{"./requestAnimFrame.js":5,"gsap/CSSPlugin":1,"gsap/TweenLite":2,"jquery":3}],5:[function(require,module,exports){
 module.exports = (function(){
     return window.requestAnimationFrame       ||
            window.webkitRequestAnimationFrame ||
@@ -15281,24 +15256,6 @@ module.exports = (function(){
            window.msRequestAnimationFrame     ||
            function(callback){ window.setTimeout(callback, 1000/60); };
 })();
-},{}],6:[function(require,module,exports){
-module.exports = function(callback, delay){
-    var last, timer;
-    return function (){
-        var context = this, now = +new Date(), args = arguments;
-        if(last && now < last + delay){
-            // le délai n'est pas écoulé on reset le timer
-            clearTimeout(timer);
-            timer = setTimeout(function (){
-                last = now;
-                callback.apply(context, args);
-            }, delay);
-        }else{
-            last = now;
-            callback.apply(context, args);
-        }
-    };
-}
 },{}]},{},[4])
 
 //# sourceMappingURL=main.js.map
